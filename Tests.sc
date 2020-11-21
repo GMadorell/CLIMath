@@ -47,8 +47,32 @@ val tests = utest.Tests {
   }
   "Subtract numbers" - {
     assertSuccess(CLIMath.calculate("1-2"), -1.0d)
+    assertSuccess(CLIMath.calculate("1--2"), 3.0d)
+    assertSuccess(CLIMath.calculate("-1-2"), -3.0d)
     assertSuccess(CLIMath.calculate("1-2-3"), -4.0d)
     assertSuccess(CLIMath.calculate("130-25,5"), 104.5d)
+  }
+  "Multiply numbers" - {
+    assertSuccess(CLIMath.calculate("1*2"), 2.0d)
+    assertSuccess(CLIMath.calculate("1*-2"), -2.0d)
+    assertSuccess(CLIMath.calculate("-1*-3"), 3.0d)
+    assertSuccess(CLIMath.calculate("2*10*120"), 2400.0d)
+  }
+  "Divide numbers" - {
+    assertSuccess(CLIMath.calculate("1/2"), 0.5d)
+    assertSuccess(CLIMath.calculate("1/-2"), -0.5d)
+    assertSuccess(CLIMath.calculate("-1/-3"), 1.0d/3)
+  }
+  "Handle order of operations" - {
+    assertSuccess(CLIMath.calculate("1+2*3"), 7.0d)
+    assertSuccess(CLIMath.calculate("2*3+1"), 7.0d)
+    assertSuccess(CLIMath.calculate("1-2*3"), -5.0d)
+    assertSuccess(CLIMath.calculate("-2*3+1"), -5.0d)
+
+    assertSuccess(CLIMath.calculate("1+4/2"), 3.0d)
+    assertSuccess(CLIMath.calculate("4/2+1"), 3.0d)
+    assertSuccess(CLIMath.calculate("1-4/2"), -1.0d)
+    assertSuccess(CLIMath.calculate("-4/2+1"), -1.0d)
   }
 
   def assertSuccess(result: Parsed[Double], expected: Double) = {

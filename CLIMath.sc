@@ -57,18 +57,23 @@ def number[_: P] = P(
     anyInteger
 ).map(_.toDouble)
 
-def operator[_: P] = P("+" | "-").!
-
-def expression[_: P] = P(
-  number ~ (operator ~ number).rep(0)
-)
-
-def parser[_: P]: P[Double] = P(expression.map {
-  case (head, tail) => tail.foldLeft(head) {
-    case (accumulator, ("+", number)) => accumulator + number
-    case (accumulator, ("-", number)) => accumulator - number
+def operate(operations: (Double, Seq[(String, Double)])) =
+  operations match {
+    case (firstNumber, otherOperations) =>
+      otherOperations.foldLeft(firstNumber) {
+        case (accumulator, ("+", number)) => accumulator + number
+        case (accumulator, ("-", number)) => accumulator - number
+        case (accumulator, ("*", number)) => accumulator * number
+        case (accumulator, ("/", number)) => accumulator / number
+      }
   }
-} ~ End)
+
+def mulAndDiv[_: P] =
+  P(number ~ (("*" | "/").! ~ number).rep).map(operate)
+def addAndSub[_: P] =
+  P(mulAndDiv ~ (("+" | "-").! ~ mulAndDiv).rep).map(operate)
+
+def parser[_: P]: P[Double] = P(addAndSub ~ End)
 
 def calculate(mathExpression: String): Parsed[Double] =
   parse(mathExpression, parser(_))
