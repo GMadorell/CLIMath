@@ -42,7 +42,6 @@ val tests = utest.Tests {
     assertSuccess(CLIMath.calculate("1+2+3+4+5"), 15.0d)
     assertSuccess(CLIMath.calculate("120+240"), 360.0d)
     assertSuccess(CLIMath.calculate("120+240+10010"), 10370.0d)
-    assertSuccess(CLIMath.calculate("120 + 240"), 360.0d)
     assertSuccess(CLIMath.calculate("1.123+123.13"), 124.253d)
   }
   "Subtract numbers" - {
@@ -61,7 +60,7 @@ val tests = utest.Tests {
   "Divide numbers" - {
     assertSuccess(CLIMath.calculate("1/2"), 0.5d)
     assertSuccess(CLIMath.calculate("1/-2"), -0.5d)
-    assertSuccess(CLIMath.calculate("-1/-3"), 1.0d/3)
+    assertSuccess(CLIMath.calculate("-1/-4"), 0.25d)
   }
   "Handle order of operations" - {
     assertSuccess(CLIMath.calculate("1+2*3"), 7.0d)
@@ -74,10 +73,31 @@ val tests = utest.Tests {
     assertSuccess(CLIMath.calculate("1-4/2"), -1.0d)
     assertSuccess(CLIMath.calculate("-4/2+1"), -1.0d)
   }
+  "Handle parenthesis" - {
+    assertSuccess(CLIMath.calculate("(1)"), 1.0d)
+    assertSuccess(CLIMath.calculate("(1,12)"), 1.12d)
+    assertSuccess(CLIMath.calculate("(1+4.2)"), 5.2d)
+    assertSuccess(CLIMath.calculate("(-1*2)"), -2.0d)
+    assertSuccess(CLIMath.calculate("(1+2)*3"), 9.0d)
+    assertSuccess(CLIMath.calculate("2*(3+1)"), 8.0d)
+    assertSuccess(CLIMath.calculate("2*(-3+1)"), -4.0d)
+    assertSuccess(CLIMath.calculate("2+(3+(4+5))"), 14.0d)
 
-  def assertSuccess(result: Parsed[Double], expected: Double) = {
+    assertSuccess(CLIMath.calculate("(1+4)/2"), 2.5d)
+    assertSuccess(CLIMath.calculate("6/(2+1)"), 2.0d)
+    assertSuccess(CLIMath.calculate("6/(-2+1)"), -6.0d)
+  }
+  "Handle whitespace" - {
+    assertSuccess(CLIMath.calculate(" 1"), 1.0d)
+    assertSuccess(CLIMath.calculate("1 "), 1.0d)
+    assertSuccess(CLIMath.calculate(" 1   +   2   "), 3.0d)
+    assertSuccess(CLIMath.calculate("120 000.001"), 120000.001d)
+    assertSuccess(CLIMath.calculate("1 23   45   .  6  "), 12345.6d)
+  }
+
+  def assertSuccess(result: Parsed[BigDecimal], expected: Double) = {
     assert(result match {
-      case Parsed.Success(actualResult, _) => actualResult == expected
+      case Parsed.Success(actualResult, _) => actualResult == BigDecimal.apply(expected)
       case _                               => false
     })
   }
