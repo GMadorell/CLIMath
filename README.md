@@ -28,6 +28,12 @@ CLIMath is an Ammonite script, so it requires an Ammonite installation to work. 
 
 As CLIMath is a single script. Installation is as easy as downloading it from GitHub and placing it somewhere visible in your path.
 
+```
+curl -o CLIMath.sc https://raw.githubusercontent.com/GMadorell/CLIMath/main/CLIMath.sc
+```
+
+The command above will download the latest version of the script into a file called 'CLIMath.sc'.
+
 
 ## How to test
 ```
