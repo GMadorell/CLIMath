@@ -4,7 +4,7 @@ import fastparse.Parsed.Failure
 import fastparse.Parsed.Success
 
 val help =
-  """CLIMath - Handle Arithmetic Operations on the CLI
+  """CLIMath - No Non-sense Arithmetic Operations on the CLI
 Usage:
 
 $ amm CliMath.sc 10 + 4 + 2
