@@ -11,7 +11,7 @@ CLIMath to the rescue!
 
 ## Example Usage
 ```shell
-alias math="amm CliMath.sc"
+alias math="amm CLIMath.sc"
 
 $ math 10 + 4 + 2
 > 16
