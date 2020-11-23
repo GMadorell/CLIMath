@@ -7,13 +7,13 @@ val help =
   """CLIMath - No Non-sense Arithmetic Operations on the CLI
 Usage:
 
-$ amm CliMath.sc 10 + 4 + 2
+$ amm --silent CliMath.sc 10 + 4 + 2
 > 16
 
-$ amm CliMath.sc "10 * (2 + 1.24)"
+$ amm --silent CliMath.sc "10 * (2 + 1.24)"
 > 30.24
 
-$ amm CliMath.sc 100 000. 01 + 345,545.12 + 456.678.213,39
+$ amm --silent CliMath.sc 100 000. 01 + 345,545.12 + 456.678.213,39
 > 457123758.52
 """
 
